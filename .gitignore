@@ -1,52 +1,64 @@
-# Prerequisites
-*.d
+#include <stdio.h>
+#include <string.h>
 
-# Object files
-*.o
-*.ko
-*.obj
-*.elf
+// Estrutura para armazenar os dados de cada item
+struct Item {
+    int id;
+    char nome[50];
+    float unitario;
+    int qtde;
+    float total_item;
+};
 
-# Linker output
-*.ilk
-*.map
-*.exp
+int main() {
+    // Solicita ao usuário o número de itens que ele deseja inserir
+    int numItens;
+    printf("Digite o número de itens que você deseja inserir: ");
+    scanf("%d", &numItens);
 
-# Precompiled Headers
-*.gch
-*.pch
+    // Cria um array de structs para armazenar os dados dos itens
+    struct Item itens[numItens];
 
-# Libraries
-*.lib
-*.a
-*.la
-*.lo
+    // Loop para inserir os dados de cada item
+    for(int i = 0; i < numItens; i++) {
+        printf("\nInsira o item %d:\n", i+1);
+        printf("ID: ");
+        scanf("%d", &itens[i].id);
 
-# Shared objects (inc. Windows DLLs)
-*.dll
-*.so
-*.so.*
-*.dylib
+        // Verifica se o ID já foi inserido
+        for(int j = 0; j < i; j++) {
+            if(itens[j].id == itens[i].id) {
+                printf("Erro: Este ID já foi inserido. Tente novamente.\n");
+                i--;
+                break;
+            }
+        }
 
-# Executables
-*.exe
-*.out
-*.app
-*.i*86
-*.x86_64
-*.hex
+        printf("Nome: ");
+        scanf("%s", itens[i].nome);
 
-# Debug files
-*.dSYM/
-*.su
-*.idb
-*.pdb
+        printf("Valor Unitário: ");
+        scanf("%f", &itens[i].unitario);
 
-# Kernel Module Compile Results
-*.mod*
-*.cmd
-.tmp_versions/
-modules.order
-Module.symvers
-Mkfile.old
-dkms.conf
+        printf("Quantidade: ");
+        scanf("%d", &itens[i].qtde);
+
+        // Calcula o total do item
+        itens[i].total_item = itens[i].unitario * itens[i].qtde;
+    }
+
+    // Imprime a lista dos itens com seus respectivos preços
+    printf("\nCODIGO     NOME                 QTDE   UNIT    TOTAL\n");
+    for(int i = 0; i < numItens; i++) {
+        printf("%05d %s %d %.2f %.2f\n", itens[i].id, itens[i].nome, itens[i].qtde, itens[i].unitario, itens[i].total_item);
+    }
+
+    // Calcula e imprime o total dos preços de todos os itens
+    float totalFinal = 0;
+    for(int i = 0; i < numItens; i++) {
+        totalFinal += itens[i].total_item;
+    }
+    printf("\n TOTAL FINAL %.2f\n", totalFinal);
+
+    return 0;
+}
